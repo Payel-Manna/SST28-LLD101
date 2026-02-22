@@ -2,7 +2,7 @@ import java.nio.charset.StandardCharsets;
 
 public class PdfExporter extends Exporter {
     @Override
-    public ExportResult export(ExportRequest req) {
+    protected ExportResult doExport(ExportRequest req) {
         // LSP violation: tightens precondition arbitrarily
         if (req.body != null && req.body.length() > 20) {
             throw new IllegalArgumentException("PDF cannot handle content > 20 chars");
