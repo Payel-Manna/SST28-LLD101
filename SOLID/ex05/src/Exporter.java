@@ -1,5 +1,5 @@
 public abstract class Exporter {
-    // implied "contract" but not enforced (smell)
+    
 
     public final ExportResult export(ExportRequest req) {
 
