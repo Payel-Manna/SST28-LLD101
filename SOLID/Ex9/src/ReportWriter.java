@@ -1,4 +1,5 @@
-public class ReportWriter {
+public class ReportWriter implements ReportService {
+    @Override
     public String write(Submission s, int plag, int code) {
         // writes to a pretend file name
         return "report-" + s.roll + ".txt";
