@@ -1,5 +1,6 @@
 package com.example.metrics;
 
+import java.io.ObjectStreamException;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Collections;
@@ -24,19 +25,28 @@ public class MetricsRegistry implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
-
-    private static MetricsRegistry INSTANCE; // BROKEN: not volatile, not thread-safe
+    //Volatile=>for double checked locking to work correctly
+    private static volatile MetricsRegistry INSTANCE; // BROKEN: not volatile, not thread-safe
     private final Map<String, Long> counters = new HashMap<>();
 
     // BROKEN: should be private and should prevent second construction
-    public MetricsRegistry() {
+    private MetricsRegistry() {
         // intentionally empty
+        //Reflection protection
+        if(INSTANCE!=null){
+            throw new IllegalStateException("Already initialized");
+        }
     }
 
     // BROKEN: racy lazy init; two threads can create two instances
+    //Double checked locking to make thread safe
     public static MetricsRegistry getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new MetricsRegistry();
+            synchronized(MetricsRegistry.class){
+                if(INSTANCE==null){
+                    INSTANCE=new MetricsRegistry();
+                }
+            }
         }
         return INSTANCE;
     }
@@ -58,4 +68,9 @@ public class MetricsRegistry implements Serializable {
     }
 
     // TODO: implement readResolve() to preserve singleton on deserialization
+    @Serial
+    private Object redResolver() throws ObjectStreamException{
+        return getInstance();
+    }
 }
+
