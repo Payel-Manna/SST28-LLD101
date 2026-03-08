@@ -9,6 +9,7 @@ package com.example.map;
  * - Store intrinsic state as a shared MarkerStyle obtained from MarkerStyleFactory.
  * - Keep only extrinsic state here: lat, lng, label.
  */
+//Extrinsic=>unique
 public class MapMarker {
 
     private final double lat;
@@ -17,15 +18,15 @@ public class MapMarker {
 
     // BROKEN: style is created per marker; should be shared
     private final MarkerStyle style;
-
-    public MapMarker(double lat, double lng, String label,
-                     String shape, String color, int size, boolean filled) {
+     //Instead of MapMarker(lat,lng,label,shape,color,size,filled) pass style obj
+    public MapMarker(double lat, double lng, String label,MarkerStyle style) {
         this.lat = lat;
         this.lng = lng;
         this.label = label;
+        this.style=style;
 
-        // BROKEN: per-marker allocation
-        this.style = new MarkerStyle(shape, color, size, filled);
+        // // BROKEN: per-marker allocation
+        // this.style = new MarkerStyle(shape, color, size, filled);
     }
 
     public double getLat() { return lat; }
