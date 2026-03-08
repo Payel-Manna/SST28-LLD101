@@ -7,7 +7,11 @@ package com.example.reports;
  */
 public class ReportViewer {
 
-    public void open(ReportFile report, User user) {
+    // public void open(ReportFile report, User user) {
+    //     report.display(user);
+    // }
+    //Should depend on abstraction Report interface
+    public void open(Report report, User user) {
         report.display(user);
     }
 }
